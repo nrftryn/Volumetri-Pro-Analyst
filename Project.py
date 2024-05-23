@@ -5,7 +5,7 @@ def MyBG_colour(wch_colour):
     my_colour = f"<style> .stApp {{background-color: {wch_colour};}} </style>"
     st.markdown(my_colour, unsafe_allow_html=True)
 
-MyBG_colour("#274B58") 
+MyBG_colour("#9cadce") 
 
 st.title('Volumetri Pro-Analyst')
 
