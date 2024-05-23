@@ -1,4 +1,11 @@
 import streamlit as st
+from PIL import Image 
+
+def MyBG_colour(wch_colour): 
+    my_colour = f"<style> .stApp {{background-color: {wch_colour};}} </style>"
+    st.markdown(my_colour, unsafe_allow_html=True)
+
+MyBG_colour("#274B58") 
 
 st.title('Volumetri Pro-Analyst')
 
@@ -48,85 +55,97 @@ with tab2:
     st.write('Secara sederhana, konsentrasi larutan dapat memberikan gambaran atau sebuah informasi tentang perbandingan jumlah zat terlarut dan jumlah pelarutnya. Konsentrasi larutan yang biasa dipakai pada laboratorium ada banyak jenisnya')
     st.write('Berikut ini terdapat konsentrasi larutan :')
 
-    kons_option = st.selectbox('Pilih Jenis Konsentrasi', ['None','Normalitas','Molaritas','% Kadar (b/v)','% kadar (b/b)'])
+    kons_option1 = st.selectbox('Pilih Jenis Konsentrasi', ['None','Normalitas','Molaritas','% Kadar (b/v)','% kadar (b/b)','Rumus-Rumus Konsentrasi'], key='selectbox1')
 
-    if kons_option == 'Normalitas':
+    if kons_option1 == 'Normalitas':
         st.subheader('Normalitas (N)')
         st.write('Normalitas adalah jumlah ekuivalen suatu zat terlarut dibagi volume larutan dalam liter dengan simbol yang dimiliki yaitu N. Normalitas juga dikenal sebagai konsentrasi setara. Setara adalah banyaknya zat terlarut yang akan bereaksi dengan sejumlah tertentu (biasanya satu mol) reaktan lain.')
     
-    if kons_option == 'Molaritas':
+    if kons_option1 == 'Molaritas':
         st.subheader('Molaritas (M)')
         st.write('Molaritas dalam konsentrasi larutan dikenal dengan istilah konsentrasi molar atau molaritas dengan simbol yang dimiliki yaitu M. Molaritas digunakan untuk mendapatkan konsentrasi larutan secara kuantitatif. Dinyatakan sebagai jumlah mol suatu Solut dalam larutan dibagi dengan volume larutan yang ditentukan dalam liter.')
 
-    if kons_option == '% kadar (b/b)':
+    if kons_option1 == '% kadar (b/b)':
         st.subheader('% Kadar (b/b)')
         st.write('Konsentrasi berat suatu larutan dinyatakan sebagai % (b/b). Dalam hal ini, volume masing-masing bahan kimia diabaikan dan hanya beratnya saja yang digunakan, persen berat sering digunakan karena persen ini tidak bergantung pada temperatur suhu.')
 
-    if kons_option == '% Kadar (b/v)':
+    if kons_option1 == '% Kadar (b/v)':
         st.subheader('% Kadar (b/v)')
         st.write('Konsentrasi massa larutan dinyatakan sebagai % (b/v) untuk berat per volume. Ini digunakan ketika bahan kimia padat dilarutkan dalam cairan.')
 
+    if kons_option1 == 'Rumus-Rumus Konsentrasi':
+        st.subheader('Rumus-Rumus Konsentrasi')
+        st.image('Rumus.png')
+
 
 with tab3:
-    st.header('Hitung Normalitas')
+    st.header('Kalkulator Konsentrasi')
+    kal_option2 = st.selectbox('Pilih Jenis Konsentrasi', ['None', 'Normalitas', 'Molaritas', '% Kadar (b/v)', '% Kadar (b/b)'], key='selectbox2')
 
-    default_value = 1.0000
-    min_value = 0.0000
-    max_value = 9999.0000
     
-    massa1 = st.number_input('Masukkan nilai massa (mg)',format="%.4f",value=default_value,key='massa1')
-    volume1 = st.number_input('Masukkan nilai volume titran (mL)',format="%.2f",value=default_value,key='volume1')
-    BE1 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f",value=default_value,key='BE1')
-    FP1 = st.number_input('Masukkan nilai FP',format="%.0f",value=default_value,key='FP1')
+    if kal_option2 == 'Normalitas':
+        st.subheader('Hitung Normalitas')
+        default_value = 1.0000
+        min_value = 0.0000
+        max_value = 9999.0000
+        
+        massa1 = st.number_input('Masukkan nilai massa (mg)',format="%.4f",value=default_value,key='massa1')
+        volume1 = st.number_input('Masukkan nilai volume titran (mL)',format="%.2f",value=default_value,key='volume1')
+        BE1 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f",value=default_value,key='BE1')
+        FP1 = st.number_input('Masukkan nilai FP',format="%.0f",value=default_value,key='FP1')
+        
+        tombol = st.button('Hitung nilai normalitasnya')
+        
+        nilai_normalitas1=massa1/(BE1*volume1*FP1)
+        if tombol:
+            nilai_normalitas = massa1/(BE1*volume1*FP1)
+            st.success(f'Nilai normalitas adalah {nilai_normalitas:.4f} N')
 
-    tombol = st.button('Hitung nilai normalitasnya')
-
-    nilai_normalitas1=massa1/(BE1*volume1*FP1)
-    if tombol:
-        nilai_normalitas = massa1/(BE1*volume1*FP1)
-        st.success(f'Nilai normalitas adalah {nilai_normalitas:.4f} N')
-
-
-    st.header('Hitung Molaritas')
-
-    default_value = 1.0000
-    min_value = 0.0000
-    max_value = 9999.0000
     
-    massa2 = st.number_input('Masukkan nilai massa (mg)',format="%.4f",value=default_value,key='massa2')
-    volume2 = st.number_input('Masukkan nilai volume titran (mL)',format="%.2f",value=default_value,key='volume2')
-    BM2 = st.number_input('Masukkan nilai BM (mg/mmol)',format="%.1f",value=default_value,key='BM2')
-    FP2 = st.number_input('Masukkan nilai FP',format="%.0f",value=default_value,key='FP2')
+    if kal_option2 == 'Molaritas':
+        st.subheader('Hitung Molaritas')
+        default_value = 1.0000
+        min_value = 0.0000
+        max_value = 9999.0000
+        
+        massa2 = st.number_input('Masukkan nilai massa (mg)',format="%.4f",value=default_value,key='massa2')
+        volume2 = st.number_input('Masukkan nilai volume titran (mL)',format="%.2f",value=default_value,key='volume2')
+        BM2 = st.number_input('Masukkan nilai BM (mg/mmol)',format="%.1f",value=default_value,key='BM2')
+        FP2 = st.number_input('Masukkan nilai FP',format="%.0f",value=default_value,key='FP2')
+        
+        tombol = st.button('Hitung nilai molaritasnya')
+        
+        nilai_molaritas1=massa2/(BM2*volume2*FP2)
+        if tombol:
+            nilai_molaritas = massa2/(BM2*volume2*FP2)
+            st.success(f'Nilai molaritas adalah {nilai_molaritas:.4f} M')
 
-    tombol = st.button('Hitung nilai molaritasnya')
-
-    nilai_molaritas1=massa2/(BM2*volume2*FP2)
-    if tombol:
-        nilai_molaritas = massa2/(BM2*volume2*FP2)
-        st.success(f'Nilai molaritas adalah {nilai_molaritas:.4f} M')
-
-    st.header('Hitung % Kadar (b/v)')
-    Vtitran3 = st.number_input('Masukkan nilai volume titran (mL)',key='Vtitran3')
-    Ntitran3 = st.number_input('Masukkan nilai normalitas titran (mgrek/ml)',format='%.4f', value=(nilai_normalitas1),key='Ntitran3')
-    BE3 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f",key='BE3')
-    FP3 = st.number_input('Masukkan nilai FP',format="%.0f",key='FP3')
-    Vtitrat3 = st.number_input('Masukkan nilai volume titrat (mL)',format="%.0f",key='Vtitrat3')
-
-    tombol1 = st.button('Hitung nilai kadarnya',key='tombol1')
-
-    if tombol1:
-        nilai_kadar = (Vtitran3*Ntitran3*BE3*10**-3*FP3*100)/Vtitrat3 
-        st.success(f'Persentase kadarnya adalah {nilai_kadar:.2f}% (b/v)')
+    if kal_option2 == '% Kadar (b/v)':
+        st.subheader('Hitung % Kadar (b/v)')
+        
+        Vtitran3 = st.number_input('Masukkan nilai volume titran (mL)',key='Vtitran3')
+        Ntitran3 = st.number_input('Masukkan nilai normalitas titran (N)',format='%.4f', key='Ntitran3')
+        BE3 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f",key='BE3')
+        FP3 = st.number_input('Masukkan nilai FP',format="%.0f",key='FP3')
+        Vtitrat3 = st.number_input('Masukkan nilai volume titrat (mL)',format="%.0f",key='Vtitrat3')
+        
+        tombol1 = st.button('Hitung nilai kadarnya',key='tombol1')
+        
+        if tombol1:
+            nilai_kadar = (Vtitran3*Ntitran3*BE3*10**-3*FP3*100)/Vtitrat3 
+            st.success(f'Persentase kadarnya adalah {nilai_kadar:.2f}% (b/v)')
     
-    st.header('Hitung % Kadar (b/b)')
-    Vtitran4 = st.number_input('Masukkan nilai volume titran (mL)', key='Vtitran4')
-    Ntitran4 = st.number_input('Masukkan nilai normalitas titran (N)',format='%.4f', value=(nilai_normalitas1), key='Ntitran4')
-    BE4 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f", key='BE4')
-    FP4 = st.number_input('Masukkan nilai FP',format="%.0f",key='FP4')
-    mtitrat4 = st.number_input('Masukkan nilai massa sampel (mg)',format="%.0f",key='mtitrat4')
 
-    tombol2 = st.button('Hitung nilai kadarnya',key='tombol2')
-
-    if tombol2:
-        nilai_kadar = (Vtitran4*Ntitran4*BE4*FP4*100)/mtitrat4 
-        st.success(f'Persentase kadarnya adalah {nilai_kadar:.2f}% (b/b)')
+    if kal_option2 == '% Kadar (b/b)':
+        st.subheader('Hitung % Kadar (b/b)')
+        Vtitran4 = st.number_input('Masukkan nilai volume titran (mL)', key='Vtitran4')
+        Ntitran4 = st.number_input('Masukkan nilai normalitas titran (N)',format='%.4f', key='Ntitran4')
+        BE4 = st.number_input('Masukkan nilai BE (mg/mgrek)',format="%.1f", key='BE4')
+        FP4 = st.number_input('Masukkan nilai FP',format="%.0f",key='FP4')
+        mtitrat4 = st.number_input('Masukkan nilai massa sampel (mg)',format="%.0f",key='mtitrat4')
+        
+        tombol2 = st.button('Hitung nilai kadarnya',key='tombol2')
+        
+        if tombol2:
+            nilai_kadar = (Vtitran4*Ntitran4*BE4*FP4*100)/mtitrat4 
+            st.success(f'Persentase kadarnya adalah {nilai_kadar:.2f}% (b/b)')
